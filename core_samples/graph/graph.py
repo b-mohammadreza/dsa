@@ -17,7 +17,7 @@ class GraphStruct:
     def traverse(self, t_type) -> None:
         if t_type == GraphStruct.T_TYPE_DFS:
             return self._dfs(0, [])
-        return self._bfs()
+        return self._bfs(0)
 
     def shortest_path(self) -> None:
         """implement both Dijkstra's andBellman-Ford's algorithms"""
@@ -38,12 +38,30 @@ class GraphStruct:
         adj_arr = self._adj_matrix[node_index]
         print(f'GraphStruct_dfs(): **********adjucent nodes for node-{node_index}: {adj_arr}')
 
-        for index in range(0, len(adj_arr)):
-            if index > 0:
+        for index, val in enumerate(adj_arr):
+            if val > 0:
                 self._dfs(index, visited=visited)
 
-    def _bfs(self) -> None:
-        pass
+    def _bfs(self, start_index: int) -> None:
+        visited: list[int] = []
+        to_visit: list[int] = []
+
+        to_visit.append(start_index)
+
+        while len(to_visit) > 0:
+            next_index = to_visit.pop(0)
+            print(f'GraphStruct_bfs(): >>>>>>>>>>node traversed - index: {next_index}, data: {self._nodes[next_index]._data}')
+
+            visited.append(next_index)
+
+            adj_arr = self._adj_matrix[next_index]
+            print(f'GraphStruct_bfs(): **********adjucent nodes for node-{next_index}: {adj_arr}')
+
+            for index, val in enumerate(adj_arr):
+                if val > 0 and index not in visited and index not in to_visit:
+                    to_visit.append(index)
+                    print(f'GraphStruct_bfs(): node-{index} added into "t_visit" list')
+
 
     def is_cyclic(self) -> bool:
         pass
@@ -61,4 +79,5 @@ if __name__ == '__main__':
     graph = GraphStruct([GraphNode('aaa'), GraphNode('aab'), GraphNode('abb'), GraphNode('bbb')]
                         , [[0,1,1,1], [1,0,1,0], [1,1,0,0], [1,0,0,0]])
     
-    graph.traverse(GraphStruct.T_TYPE_DFS)
+    # graph.traverse(GraphStruct.T_TYPE_DFS)
+    graph.traverse(GraphStruct.T_TYPE_BFS)
