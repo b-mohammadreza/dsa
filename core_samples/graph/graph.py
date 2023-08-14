@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+import json
+
 class GraphNode:
     def __init__(self, data: str) -> None:
         # for convenience I defined the data member as 'str',
