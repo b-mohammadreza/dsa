@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-import json
-
 class GraphNode:
     def __init__(self, data: str) -> None:
         # for convenience I defined the data member as 'str',
@@ -87,7 +85,9 @@ class GraphStruct:
 
 
 
+    # failed on test_case graph_8.json
     def is_cyclic(self) -> bool:
+        print('is_cyclic() called...')
         return self._dfs(0, [], [])
 
     def remove(self, val) -> bool:
@@ -127,7 +127,8 @@ if __name__ == '__main__':
     # print(f'is graph cyclic: {graph.is_cyclic()}')
     # graph.traverse(GraphStruct.T_TYPE_BFS)
 
-    graph = GraphStruct([GraphNode('aaa'), GraphNode('aab'), GraphNode('abb'), GraphNode('bbb')]
-                        , [[0,1,0,0], [1,0,1,0], [0,1,1,1], [0,0,1,0]])
+    # graph = GraphStruct([GraphNode('aaa'), GraphNode('aab'), GraphNode('abb'), GraphNode('bbb')]
+    #                     , [[0,1,0,0], [1,0,1,0], [0,1,1,1], [0,0,1,0]])
     # print(f'is graph cyclic: {graph.is_cyclic()}')
-    graph.traverse(GraphStruct.T_TYPE_BFS)
+    # graph.traverse(GraphStruct.T_TYPE_BFS)
+    pass
