@@ -40,6 +40,7 @@ def get_graph_list(get_file_list) -> list[(ds_graph.GraphStruct, str)]:
 
 def test_graph_struct(get_graph_list) -> None:
     print('test_graph_struct(): started...')
+
     for _graph, file in get_graph_list:
         if file == 'graph_1.json':
             assert _graph.is_cyclic() == True

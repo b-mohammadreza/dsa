@@ -35,6 +35,10 @@ class GraphStruct:
     def _dfs(self, node_index: int, visited: list[int], stack: list[int]) -> bool:
         is_cyclic: bool = False
 
+        if self._adj_matrix[node_index][node_index] > 0:
+            is_cyclic = True
+            print(f'GraphStruct_dfs(): ^^node self cycle found-index: {node_index}')
+
         if len(stack) > 2 and node_index != stack[-2] and node_index in stack:
             is_cyclic = True
             print(f'GraphStruct_dfs(): ^^stack cycle found: {stack}')
@@ -85,7 +89,6 @@ class GraphStruct:
 
 
 
-    # failed on test_case graph_8.json
     def is_cyclic(self) -> bool:
         print('is_cyclic() called...')
         return self._dfs(0, [], [])
