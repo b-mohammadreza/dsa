@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+from typing import Self
+
 class GraphNode:
     def __init__(self, data: str) -> None:
         # for convenience I defined the data member as 'str',
@@ -7,8 +9,13 @@ class GraphNode:
         self._data: str = data 
 
 class GraphStruct:
+    """ travese types """
     T_TYPE_DFS = 0
     T_TYPE_BFS = 1
+
+    """ commands for updating the adjacency matrix """
+    _U_REMOVE = 0
+    _U_ADD = 1
 
     def __init__(self, nodes: list[GraphNode], adj_matrix: list[list[int]]) -> None:
         self._adj_matrix = adj_matrix
@@ -23,14 +30,6 @@ class GraphStruct:
             self._dfs(0, [], [])
         else:
             self._bfs(0)
-
-    def shortest_path(self) -> None:
-        """implement both Dijkstra's andBellman-Ford's algorithms"""
-        pass
-
-    def min_spanning_tree(self) -> None:
-        """implement both Kruskal's and Prim's algorithms"""
-        pass
 
     def _dfs(self, node_index: int, visited: list[int], stack: list[int]) -> bool:
         is_cyclic: bool = False
@@ -93,16 +92,64 @@ class GraphStruct:
         print('is_cyclic() called...')
         return self._dfs(0, [], [])
 
-    def remove(self, val) -> bool:
+    def remove(self, val) -> (bool, Self):
+        for index, node in enumerate(self._nodes):
+            if node._data == val:
+                self._nodes.pop(index)
+
+                return self._update_graph(GraphStruct._U_REMOVE, index)
+
+        return (False, None)
+        
+
+    def shortest_path(self) -> None:
+        """implement both Dijkstra's and Bellman-Ford's algorithms"""
         pass
 
-    def _update_graph(self) -> None:
+    def min_spanning_tree(self) -> None:
+        """implement both Kruskal's and Prim's algorithms"""
         pass
+
+    def _update_graph_remove(self, index) -> (bool, Self):
+        for row_index, _ in enumerate(self._adj_matrix):
+            if row_index == index:
+                self._adj_matrix.pop(index)
+                break
+        else:
+            print(f'_update_graph_remove(): remove row -> invalid index-{index}')
+            return (False, None) 
+
+        for row in self._adj_matrix:
+            for col_index, _ in enumerate(row):
+                if col_index == index:
+                    row.pop(index)
+                    break
+            else:
+                """can't reach here because _adj_matrix is a square matrix"""
+        
+        return (True, self)
+
+
+    def _update_graph(self, cmd, index) -> (bool, Self):
+        match cmd:
+            case GraphStruct._U_REMOVE:
+                return self._update_graph_remove(index)
+            case GraphStruct._U_ADD:
+                return (False, None)
+            case _:
+                return (False, None)
 
 if __name__ == '__main__':
     # graph = GraphStruct([GraphNode('aaa'), GraphNode('aab'), GraphNode('abb'), GraphNode('bbb')]
     #                     , [[0,1,1,1], [1,0,1,0], [1,1,0,0], [1,0,0,0]])
-    
+
+    # (result, new_graph) = graph.remove('abb')
+    # print(f'>>>>result: {result}')
+    # print(f'>>>>new_graph nodes: {new_graph._nodes}')
+    # print(f'>>>>new_graph adj matrix: {new_graph._adj_matrix}')
+
+
+
     # graph.traverse(GraphStruct.T_TYPE_DFS)
     # graph.traverse(GraphStruct.T_TYPE_BFS)
     # print(f'is graph cyclic: {graph.is_cyclic()}')

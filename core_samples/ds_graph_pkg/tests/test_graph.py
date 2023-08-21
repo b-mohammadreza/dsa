@@ -38,27 +38,43 @@ def get_graph_list(get_file_list) -> list[(ds_graph.GraphStruct, str)]:
     
     return graph_file_list
 
-def test_graph_struct(get_graph_list) -> None:
-    print('test_graph_struct(): started...')
+def test_graph_is_cyclic(get_graph_list) -> None:
+    print('test_graph_is_cyclic(): started...')
 
-    for _graph, file in get_graph_list:
-        if file == 'graph_1.json':
+    for _graph, file_name in get_graph_list:
+        if file_name == 'graph_1.json':
             assert _graph.is_cyclic() == True
-        elif file == 'graph_2.json':
+        elif file_name == 'graph_2.json':
             assert _graph.is_cyclic() == False
-        elif file == 'graph_3.json':
+        elif file_name == 'graph_3.json':
             assert _graph.is_cyclic() == False
-        elif file == 'graph_4.json':
+        elif file_name == 'graph_4.json':
             assert _graph.is_cyclic() == True
-        elif file == 'graph_5.json':
+        elif file_name == 'graph_5.json':
             assert _graph.is_cyclic() == True
-        elif file == 'graph_6.json':
+        elif file_name == 'graph_6.json':
             assert _graph.is_cyclic() == True
-        elif file == 'graph_7.json':
+        elif file_name == 'graph_7.json':
             assert _graph.is_cyclic() == True
-        elif file == 'graph_8.json':
+        elif file_name == 'graph_8.json':
             assert _graph.is_cyclic() == True
 
-    print('test_graph_struct(): finished...')
+    print('test_graph_is_cyclic(): finished...')
 
+
+def test_graph_remove(get_graph_list) -> None:
+    print('test_graph_remove(): started...')
+
+    for _graph, file_name in get_graph_list:
+        if file_name == 'graph_1.json':
+            (result, new_graph) =  _graph.remove('abb')
+            assert result == True
+            assert new_graph._nodes[0]._data == "aaa"
+            assert new_graph._nodes[1]._data == "aab"
+            assert new_graph._nodes[2]._data == "bbb"
+            assert new_graph._adj_matrix[0] == [0,1,1]
+            assert new_graph._adj_matrix[1] == [1,0,0]
+            assert new_graph._adj_matrix[2] == [1,0,0]
+
+    print('test_graph_remove(): finished...')
 
