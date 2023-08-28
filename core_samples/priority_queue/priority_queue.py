@@ -23,6 +23,34 @@ class PriorityQueue:
 
         return self._min_heap
 
+    def is_min_heap(self, arr: list[int] = None) -> bool:
+        if arr == None:
+            if len(self._min_heap) < 1:
+                return True
+            else:
+                arr = self._min_heap
+
+        arr_len = len(arr)
+        print(f'is_min_heap(): arr len->{arr_len}')
+
+        for index, elem in enumerate(arr):
+            left_child_index = index * 2 + 1
+            right_child_index = left_child_index + 1
+
+            if left_child_index >= arr_len:
+                continue
+    
+            if elem > arr[left_child_index]:
+                return False
+            
+            if right_child_index >= arr_len:
+                continue
+    
+            if elem > arr[right_child_index]:
+                return False
+
+        return True
+
     def enqueue(self, priority: int) -> list[int]:
         """ to add a new element to the min heap data structue """
         self._min_heap.append(priority)
@@ -49,13 +77,13 @@ class PriorityQueue:
             else:
                 break
 
-        print('>>>>>>>>>>enqueue() end...')
+        print(f'>>>>>>>>>>enqueue() end. self._min_heap->{self._min_heap}')
         return self._min_heap
 
     def dequeue(self) -> (list[int], int):
         """ to remove the root element from the min heap data structure """
-        len = len(self._min_heap)
-        if len < 1:
+        arr_len = len(self._min_heap)
+        if arr_len < 1:
             return ([], None)
 
         root = self._min_heap.pop(0)
@@ -63,14 +91,17 @@ class PriorityQueue:
 
         self._min_heap.insert(0, leaf)
 
+        # we need to update the array len at this point
+        arr_len = len(self._min_heap)
+
         parent_index = 0
         while True:
             child_index = (parent_index * 2) + 1
 
-            if child_index >= len:
+            if child_index >= arr_len:
                 break
 
-            if child_index + 1 < len:
+            if child_index + 1 < arr_len:
                 if self._min_heap[child_index + 1] < self._min_heap[child_index]:
                     child_index = child_index + 1 
 
@@ -82,6 +113,7 @@ class PriorityQueue:
             else:
                 break
 
+        print(f'--------dequeue() end. self._min_heap->{self._min_heap}, root->{root}')
         return (self._min_heap, root)
 
     def peek(self) -> int:

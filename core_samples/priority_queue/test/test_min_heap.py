@@ -21,58 +21,111 @@ def get_array_list(get_file_list) -> list[(list[int], str)]:
     
     return arr_file_list
 
+def test_is_min_heap(get_array_list) -> None:
+    print('test_is_min_heap(): started...')
+
+    for arr, file_name in get_array_list:
+        if file_name == 'arr_1.json':
+            min_heap_1 = priority_queue.PriorityQueue()
+            assert min_heap_1.is_min_heap(arr) == False
+        elif file_name == 'arr_2.json':
+            min_heap_2 = priority_queue.PriorityQueue()
+            assert min_heap_2.is_min_heap(arr) == False
+        elif file_name == 'arr_3.json':
+            min_heap_3 = priority_queue.PriorityQueue()
+            assert min_heap_3.is_min_heap(arr) == False
+        elif file_name == 'arr_4.json':
+            min_heap_4 = priority_queue.PriorityQueue()
+            assert min_heap_4.is_min_heap(arr) == True
+
+    print('test_is_min_heap(): finished...')
+
 def test_heapify(get_array_list) -> None:
     print('test_heapify(): started...')
 
     for arr, file_name in get_array_list:
-        # print(f'test_heapify(): arr -> {arr}')
         if file_name == 'arr_1.json':
             min_heap_1 = priority_queue.PriorityQueue()
-            assert min_heap_1.heapify(arr) == [7,19,8,33,25,10,55,41]
-        # elif file_name == 'arr_2.json':
-        #     min_heap_2 = priority_queue.PriorityQueue()
-        #     assert min_heap_2.heapify(arr) == [3,12,5,18]
-        # elif file_name == 'arr_3.json':
-        #     min_heap_3 = priority_queue.PriorityQueue()
-        #     assert min_heap_3.heapify(arr) == [2,25,5,31,30,7,11,100,40,40,50,20,61,13,17]
+            min_heap_1.heapify(arr)
+            assert min_heap_1.is_min_heap() == True
+
+        elif file_name == 'arr_2.json':
+            min_heap_2 = priority_queue.PriorityQueue()
+            min_heap_2.heapify(arr)
+            assert min_heap_2.is_min_heap() == True
+
+        elif file_name == 'arr_3.json':
+            min_heap_3 = priority_queue.PriorityQueue()
+            min_heap_3.heapify(arr)
+            assert min_heap_3.is_min_heap() == True
 
     print('test_heapify(): finished...')
 
-# def test_enqueue(get_array_list) -> None:
-#     print('test_enqueue(): started...')
+def test_enqueue(get_array_list) -> None:
+    print('test_enqueue(): started...')
 
-#     for arr, file_name in get_array_list:
-#         if file_name == 'arr_1.json':
-#             pass
-#         elif file_name == 'arr_2.json':
-#             pass
-#         elif file_name == 'arr_3.json':
-#             pass
+    for arr, file_name in get_array_list:
+        if file_name == 'arr_1.json':
+            min_heap_1 = priority_queue.PriorityQueue()
+            min_heap_1.heapify(arr)
+            min_heap_1.enqueue(priority=5)
+            assert min_heap_1.is_min_heap() == True
 
-#     print('test_enqueue(): finished...')
+        elif file_name == 'arr_2.json':
+            min_heap_2 = priority_queue.PriorityQueue()
+            min_heap_2.heapify(arr)
+            min_heap_2.enqueue(priority=0)
+            assert min_heap_2.is_min_heap() == True
 
-# def test_dequeue(get_array_list) -> None:
-#     print('test_dequeue(): started...')
+        elif file_name == 'arr_3.json':
+            min_heap_3 = priority_queue.PriorityQueue()
+            min_heap_3.heapify(arr)
+            min_heap_3.enqueue(priority=18)
+            assert min_heap_3.is_min_heap() == True
 
-#     for arr, file_name in get_array_list:
-#         if file_name == 'arr_1.json':
-#             pass
-#         elif file_name == 'arr_2.json':
-#             pass
-#         elif file_name == 'arr_3.json':
-#             pass
+    print('test_enqueue(): finished...')
 
-#     print('test_dequeue(): finished...')
+def test_dequeue(get_array_list) -> None:
+    print('test_dequeue(): started...')
 
-# def test_peek(get_array_list) -> None:
-#     print('test_peek(): started...')
+    for arr, file_name in get_array_list:
+        if file_name == 'arr_1.json':
+            min_heap_1 = priority_queue.PriorityQueue()
+            min_heap_1.heapify(arr)
+            min_heap_1.dequeue()
+            assert min_heap_1.is_min_heap() == True
 
-#     for arr, file_name in get_array_list:
-#         if file_name == 'arr_1.json':
-#             pass
-#         elif file_name == 'arr_2.json':
-#             pass
-#         elif file_name == 'arr_3.json':
-#             pass
+        elif file_name == 'arr_2.json':
+            min_heap_2 = priority_queue.PriorityQueue()
+            min_heap_2.heapify(arr)
+            min_heap_2.dequeue()
+            assert min_heap_2.is_min_heap() == True
 
-#     print('test_peek(): finished...')
+        elif file_name == 'arr_3.json':
+            min_heap_3 = priority_queue.PriorityQueue()
+            min_heap_3.heapify(arr)
+            min_heap_3.dequeue()
+            assert min_heap_3.is_min_heap() == True
+
+    print('test_dequeue(): finished...')
+
+def test_peek(get_array_list) -> None:
+    print('test_peek(): started...')
+
+    for arr, file_name in get_array_list:
+        if file_name == 'arr_1.json':
+            min_heap_1 = priority_queue.PriorityQueue()
+            min_heap_1.heapify(arr)
+            assert min_heap_1.peek() == 7
+
+        elif file_name == 'arr_2.json':
+            min_heap_2 = priority_queue.PriorityQueue()
+            min_heap_2.heapify(arr)
+            assert min_heap_2.peek() == 3
+
+        elif file_name == 'arr_3.json':
+            min_heap_3 = priority_queue.PriorityQueue()
+            min_heap_3.heapify(arr)
+            assert min_heap_3.peek() == 2
+
+    print('test_peek(): finished...')
