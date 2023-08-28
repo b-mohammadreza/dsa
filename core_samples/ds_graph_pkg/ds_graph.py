@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from typing import Self
+import sys
 
 class GraphNode:
     def __init__(self, data: str) -> None:
@@ -9,13 +10,19 @@ class GraphNode:
         self._data: str = data 
 
 class GraphStruct:
-    """ travese types """
+    """ The data structure to define the gragh """
+
+    # travese types
     T_TYPE_DFS = 0
     T_TYPE_BFS = 1
 
-    """ commands for updating the adjacency matrix """
+    # commands for updating the adjacency matrix
     _U_REMOVE = 0
     _U_ADD = 1
+
+    # to determine shortest path algorithm
+    SHORTEST_PATH_DIJKSTRA = 0
+    SHORTEST_PATH_BELLMAN_FORD = 0
 
     def __init__(self, nodes: list[GraphNode], adj_matrix: list[list[int]]) -> None:
         self._adj_matrix = adj_matrix
@@ -101,15 +108,6 @@ class GraphStruct:
 
         return (False, None)
         
-
-    def shortest_path(self) -> None:
-        """implement both Dijkstra's and Bellman-Ford's algorithms"""
-        pass
-
-    def min_spanning_tree(self) -> None:
-        """implement both Kruskal's and Prim's algorithms"""
-        pass
-
     def _update_graph_remove(self, index) -> (bool, Self):
         for row_index, _ in enumerate(self._adj_matrix):
             if row_index == index:
@@ -138,6 +136,30 @@ class GraphStruct:
                 return (False, None)
             case _:
                 return (False, None)
+
+
+
+    def shortest_path(self, algo) -> int:
+        """implements Dijkstra's or Bellman-Ford's algorithms"""
+
+        if algo == GraphStruct.SHORTEST_PATH_DIJKSTRA:
+            return self._dijkstra()
+        
+        return self._bellman_ford()
+
+    # TODO: specify time and space complexity
+    def _dijkstra(self) -> int:
+        distances: list[int] = [sys.maxsize for _ in range(len(self._nodes))]
+        # source node is always the first node
+        distances[0] = 0
+
+    # TODO: specify time and space complexity
+    def _bellman_ford(self) -> int:
+        pass
+
+    def min_spanning_tree(self) -> None:
+        """implements Kruskal's or Prim's algorithms"""
+        pass
 
 if __name__ == '__main__':
     # graph = GraphStruct([GraphNode('aaa'), GraphNode('aab'), GraphNode('abb'), GraphNode('bbb')]
