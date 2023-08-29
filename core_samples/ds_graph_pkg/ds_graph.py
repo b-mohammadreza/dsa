@@ -2,6 +2,8 @@
 
 from typing import Self
 import sys
+sys.path.append('..')
+import priority_queue
 
 class GraphNode:
     def __init__(self, data: str) -> None:
@@ -150,8 +152,16 @@ class GraphStruct:
     # TODO: specify time and space complexity
     def _dijkstra(self) -> int:
         distances: list[int] = [sys.maxsize for _ in range(len(self._nodes))]
-        # source node is always the first node
+        unvisited: list[int] = [index for index in range(len(self._nodes))]
+        # in our implementation source node is always the first node
         distances[0] = 0
+
+        # following is a min heap of unvisited nodes distances
+
+
+    def _dijk_get_distances() -> list[int]:
+        """ returns a list of distances of unvisited nodes """
+        pass
 
     # TODO: specify time and space complexity
     def _bellman_ford(self) -> int:
