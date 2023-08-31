@@ -56,6 +56,7 @@ class PriorityQueue:
         self._min_heap.append(priority)
 
         if len(self._min_heap) < 2:
+            print(f'enqueue(): len < 2, self._min_heap -> {self._min_heap}')
             return self._min_heap
 
         new_index = len(self._min_heap) - 1
@@ -87,6 +88,11 @@ class PriorityQueue:
             return ([], None)
 
         root = self._min_heap.pop(0)
+        arr_len = len(self._min_heap)
+
+        if arr_len < 1:
+            return ([], root)
+
         leaf = self._min_heap.pop(-1)
 
         self._min_heap.insert(0, leaf)

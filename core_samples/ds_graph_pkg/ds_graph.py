@@ -3,7 +3,7 @@
 from typing import Self
 import sys
 sys.path.append('..')
-import priority_queue
+from priority_queue.priority_queue import PriorityQueue
 
 class GraphNode:
     def __init__(self, data: str) -> None:
@@ -141,7 +141,7 @@ class GraphStruct:
 
 
 
-    def shortest_path(self, algo) -> int:
+    def shortest_paths(self, algo) -> list[int]:
         """implements Dijkstra's or Bellman-Ford's algorithms"""
 
         if algo == GraphStruct.SHORTEST_PATH_DIJKSTRA:
@@ -150,18 +150,51 @@ class GraphStruct:
         return self._bellman_ford()
 
     # TODO: specify time and space complexity
-    def _dijkstra(self) -> int:
-        distances: list[int] = [sys.maxsize for _ in range(len(self._nodes))]
-        unvisited: list[int] = [index for index in range(len(self._nodes))]
+    def _dijkstra(self) -> list[int]:
+        distances: list[int] = [sys.maxsize for _ in range(len(self._nodes))]   # O(n) time, O(n) space 
+        unvisited: list[int] = [index for index in range(len(self._nodes))]     # O(n) time, O(n) space
         # in our implementation source node is always the first node
         distances[0] = 0
 
-        # following is a min heap of unvisited nodes distances
+        while True:                                                             # iterate time: O(n)
+            # following is a min heap of unvisited nodes distances
+            p_queue = PriorityQueue()
+            init_vals = [distances[index] for index in unvisited]               # O(n) time, O(n) space
+            print(f'_dijkstra(): init_vals -> {init_vals}')
+            p_queue.heapify(init_vals)                                          # O(n log n) > time, space O(n)
 
+            _, dist = p_queue.dequeue()                                         # O(log n) time, space = 0
 
-    def _dijk_get_distances() -> list[int]:
-        """ returns a list of distances of unvisited nodes """
-        pass
+            # expected no ValueError to be raised, because 'dist' value just
+            # added to the 'distances' list 
+            cur_index = distances.index(dist)                                   # O(n) time, space = 0
+
+            # expected no ValueError to be raised, because the index selected from
+            # existing values in 'unvisited' list 
+            unvisited.remove(cur_index)                                         # O(n) time, space = 0
+            if len(unvisited) < 1:
+                break
+
+            unvisited_neighbors = self._dijk_get_unvisitd_neighbors(cur_index=cur_index, unvisited=unvisited)   # O(n^2) time, space O(n)
+            for index, weight in unvisited_neighbors:
+                new_weight = dist + weight
+                if new_weight < distances[index]:
+                    distances[index] = new_weight
+
+        return distances
+            
+    def _dijk_get_unvisitd_neighbors(self, cur_index, unvisited: list[int]) -> list[int]:
+        neighbors = []
+        for index, weight in enumerate(self._adj_matrix[cur_index]):
+            if weight > 0 and index != cur_index:
+                neighbors.append((index, weight))
+
+        unvisited_neighbors = []
+        for index, weight in neighbors:
+            if index in unvisited:
+                unvisited_neighbors.append((index, weight))
+
+        return unvisited_neighbors
 
     # TODO: specify time and space complexity
     def _bellman_ford(self) -> int:
@@ -209,8 +242,10 @@ if __name__ == '__main__':
     # print(f'is graph cyclic: {graph.is_cyclic()}')
     # graph.traverse(GraphStruct.T_TYPE_BFS)
 
-    # graph = GraphStruct([GraphNode('aaa'), GraphNode('aab'), GraphNode('abb'), GraphNode('bbb')]
-    #                     , [[0,1,0,0], [1,0,1,0], [0,1,1,1], [0,0,1,0]])
+    graph = GraphStruct([GraphNode('aaa'), GraphNode('aab'), GraphNode('abb'), GraphNode('bbb')]
+                        , [[0,1,0,0], [1,0,1,0], [0,1,1,1], [0,0,1,0]])
+
+    graph.shortest_paths(GraphStruct.SHORTEST_PATH_DIJKSTRA)
     # print(f'is graph cyclic: {graph.is_cyclic()}')
     # graph.traverse(GraphStruct.T_TYPE_BFS)
     pass

@@ -1,2 +1,2 @@
-#__all__ = ['priority_queue']
+__all__ = ['priority_queue']
 

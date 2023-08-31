@@ -78,3 +78,15 @@ def test_graph_remove(get_graph_list) -> None:
 
     print('test_graph_remove(): finished...')
 
+def test_dijkstra(get_graph_list) -> None:
+    print('test_dijkstra(): started...')
+
+    for _graph, file_name in get_graph_list:
+        if file_name == 'graph_9.json':
+            distances = _graph.shortest_paths(ds_graph.GraphStruct.SHORTEST_PATH_DIJKSTRA)
+            assert distances[0] == 0
+            assert distances[1] == 2
+            assert distances[2] == 3
+            assert distances[3] == 1
+
+    print('test_dijkstra(): finished...')
