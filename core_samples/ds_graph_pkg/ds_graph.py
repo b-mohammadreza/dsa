@@ -149,7 +149,6 @@ class GraphStruct:
         
         return self._bellman_ford()
 
-    # TODO: specify time and space complexity
     def _dijkstra(self) -> list[int]:
         distances: list[int] = [sys.maxsize for _ in range(len(self._nodes))]   # O(n) time, O(n) space 
         unvisited: list[int] = [index for index in range(len(self._nodes))]     # O(n) time, O(n) space
