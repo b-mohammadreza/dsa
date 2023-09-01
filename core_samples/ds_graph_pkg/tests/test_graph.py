@@ -42,21 +42,21 @@ def test_graph_is_cyclic(get_graph_list) -> None:
     print('test_graph_is_cyclic(): started...')
 
     for _graph, file_name in get_graph_list:
-        if file_name == 'graph_1.json':
+        if file_name == 'graph_01.json':
             assert _graph.is_cyclic() == True
-        elif file_name == 'graph_2.json':
+        elif file_name == 'graph_02.json':
             assert _graph.is_cyclic() == False
-        elif file_name == 'graph_3.json':
+        elif file_name == 'graph_03.json':
             assert _graph.is_cyclic() == False
-        elif file_name == 'graph_4.json':
+        elif file_name == 'graph_04.json':
             assert _graph.is_cyclic() == True
-        elif file_name == 'graph_5.json':
+        elif file_name == 'graph_05.json':
             assert _graph.is_cyclic() == True
-        elif file_name == 'graph_6.json':
+        elif file_name == 'graph_06.json':
             assert _graph.is_cyclic() == True
-        elif file_name == 'graph_7.json':
+        elif file_name == 'graph_07.json':
             assert _graph.is_cyclic() == True
-        elif file_name == 'graph_8.json':
+        elif file_name == 'graph_08.json':
             assert _graph.is_cyclic() == True
 
     print('test_graph_is_cyclic(): finished...')
@@ -66,7 +66,7 @@ def test_graph_remove(get_graph_list) -> None:
     print('test_graph_remove(): started...')
 
     for _graph, file_name in get_graph_list:
-        if file_name == 'graph_1.json':
+        if file_name == 'graph_01.json':
             (result, new_graph) =  _graph.remove('abb')
             assert result == True
             assert new_graph._nodes[0]._data == "aaa"
@@ -82,7 +82,7 @@ def test_dijkstra(get_graph_list) -> None:
     print('test_dijkstra(): started...')
 
     for _graph, file_name in get_graph_list:
-        if file_name == 'graph_9.json':
+        if file_name == 'graph_09.json':
             distances = _graph.shortest_paths(ds_graph.GraphStruct.SHORTEST_PATH_DIJKSTRA)
             assert distances[0] == 0
             assert distances[1] == 2
@@ -90,3 +90,23 @@ def test_dijkstra(get_graph_list) -> None:
             assert distances[3] == 1
 
     print('test_dijkstra(): finished...')
+
+def test_bellman_ford(get_graph_list) -> None:
+    print('test_bellman_ford(): started...')
+
+    for _graph, file_name in get_graph_list:
+        if file_name == 'graph_10.json':
+            distances, prev_list = _graph.shortest_paths(ds_graph.GraphStruct.SHORTEST_PATH_BELLMAN_FORD)
+
+            assert distances[0] == 0
+            assert distances[1] == 1
+            assert distances[2] == 3
+            assert distances[3] == 6
+
+            assert prev_list[0] == None    
+            assert prev_list[1] == 0
+            assert prev_list[2] == 1
+            assert prev_list[3] == 1
+
+    print('test_bellman_ford(): finished...')
+

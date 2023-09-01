@@ -24,11 +24,14 @@ class GraphStruct:
 
     # to determine shortest path algorithm
     SHORTEST_PATH_DIJKSTRA = 0
-    SHORTEST_PATH_BELLMAN_FORD = 0
+    SHORTEST_PATH_BELLMAN_FORD = 1
 
     def __init__(self, nodes: list[GraphNode], adj_matrix: list[list[int]]) -> None:
         self._adj_matrix = adj_matrix
         self._nodes = nodes
+
+    def numberof_nodes(self) -> int:
+        return len(self._nodes)
 
     def traverse(self, t_type) -> None:
         """ TODO: corner case: in case if there is a node
@@ -127,9 +130,7 @@ class GraphStruct:
             case _:
                 return (False, None)
 
-
-
-    def shortest_paths(self, algo) -> list[int]:
+    def shortest_paths(self, algo):
         """implements Dijkstra's or Bellman-Ford's algorithms"""
 
         if algo == GraphStruct.SHORTEST_PATH_DIJKSTRA:
@@ -182,9 +183,27 @@ class GraphStruct:
 
         return unvisited_neighbors
 
-    # TODO: specify time and space complexity
-    def _bellman_ford(self) -> int:
-        pass
+    def _bellman_ford(self) -> (list[int], list[int]):
+        """ returns a combined list which contains 2 separate lists.
+        the first list [0..len(_nodes) - 1] is distances array.
+        the second list [len(_nodes)..(2 * len(_nodes)-1)] is prev_list """
+
+        distances: list[int] = [sys.maxsize for _ in range(len(self._nodes))]   # O(n) space
+        prev_list: list[int] = [None for _ in range(len(self._nodes))]          # O(n) space
+
+        # in our implementation source node is always the first node
+        distances[0] = 0
+
+        for _ in range(len(self._nodes) - 1):                                   # O(V * E) time, V = number of vertices, E = number of edges
+            for u_index, row in enumerate(self._adj_matrix):
+                for v_index, weight in enumerate(row):
+                    if weight > 0:
+                        dist = distances[u_index] + weight
+                        if dist < distances[v_index]:
+                            distances[v_index] = dist
+                            prev_list[v_index] = u_index
+
+        return (distances, prev_list)
 
     def min_spanning_tree(self) -> None:
         """implements Kruskal's or Prim's algorithms"""
@@ -228,10 +247,17 @@ if __name__ == '__main__':
     # print(f'is graph cyclic: {graph.is_cyclic()}')
     # graph.traverse(GraphStruct.T_TYPE_BFS)
 
-    graph = GraphStruct([GraphNode('aaa'), GraphNode('aab'), GraphNode('abb'), GraphNode('bbb')]
-                        , [[0,1,0,0], [1,0,1,0], [0,1,1,1], [0,0,1,0]])
+    # graph = GraphStruct([GraphNode('aaa'), GraphNode('aab'), GraphNode('abb'), GraphNode('bbb')]
+    #                     , [[0,1,0,0], [1,0,1,0], [0,1,1,1], [0,0,1,0]])
 
-    graph.shortest_paths(GraphStruct.SHORTEST_PATH_DIJKSTRA)
+    # graph.shortest_paths(GraphStruct.SHORTEST_PATH_DIJKSTRA)
+    # print(f'is graph cyclic: {graph.is_cyclic()}')
+    # graph.traverse(GraphStruct.T_TYPE_BFS)
+
+    # graph = GraphStruct([GraphNode('aaa'), GraphNode('aab'), GraphNode('abb'), GraphNode('bbb')]
+    #                     , [[0,1,4,0], [0,0,2,5], [0,0,0,0], [0,0,0,0]])
+
+    # graph.shortest_paths(GraphStruct.SHORTEST_PATH_BELLMAN_FORD)
     # print(f'is graph cyclic: {graph.is_cyclic()}')
     # graph.traverse(GraphStruct.T_TYPE_BFS)
     pass
