@@ -31,7 +31,6 @@ class PriorityQueue:
                 arr = self._min_heap
 
         arr_len = len(arr)
-        print(f'is_min_heap(): arr len->{arr_len}')
 
         for index, elem in enumerate(arr):
             left_child_index = index * 2 + 1
@@ -56,20 +55,16 @@ class PriorityQueue:
         self._min_heap.append(priority)
 
         if len(self._min_heap) < 2:
-            print(f'enqueue(): len < 2, self._min_heap -> {self._min_heap}')
             return self._min_heap
 
         new_index = len(self._min_heap) - 1
 
         while True:
             parent_index = (new_index - 1) // 2
-            print(f'enqueue(): new_index->{new_index}, parent_index->{parent_index}, self._min_heap->{self._min_heap}')
 
             if self._min_heap[new_index] < self._min_heap[parent_index]:
                 # following instruction swaps the contents of the items!
                 self._min_heap[parent_index], self._min_heap[new_index] = self._min_heap[new_index], self._min_heap[parent_index]
-
-                print(f'enqueue() ------- swapped: new_index->{new_index}, parent_index->{parent_index}, self._min_heap->{self._min_heap}')
 
                 if parent_index == 0:
                     break
@@ -78,7 +73,6 @@ class PriorityQueue:
             else:
                 break
 
-        print(f'>>>>>>>>>>enqueue() end. self._min_heap->{self._min_heap}')
         return self._min_heap
 
     def dequeue(self) -> (list[int], int):
@@ -119,7 +113,6 @@ class PriorityQueue:
             else:
                 break
 
-        print(f'--------dequeue() end. self._min_heap->{self._min_heap}, root->{root}')
         return (self._min_heap, root)
 
     def peek(self) -> int:

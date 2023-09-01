@@ -15,7 +15,6 @@ class TreeList:
     def __init__(self, root) -> None:
         self.root : TreeNode = root
         self.init_count(self.root)
-        print(f'TreeList: total nodes count: {TreeList.count}')
 
     def init_count(self, node: TreeNode) -> None:
         if node is None:
@@ -61,25 +60,22 @@ class TreeList:
 
         if node.left is None and node.right is None:
             TreeList.currentId += 1
-            print(f'<<<<<TreeList.currentId: {TreeList.currentId}')
 
             if node is self.root:
                 self.root.left = TreeNode()
                 self.root.left.value = val
                 TreeList.count += 1
                 TreeList.added = True
-                print(f'TreeList: adding to root.left. root val: {self.root.value}')
+
             elif TreeList.currentId >= TreeList.count:
                 new_node = TreeNode()
                 new_node.value = val
                 TreeList.targetNode.left = new_node
                 TreeList.count += 1
                 TreeList.added = True
-                print(f'TreeList: adding to the targetNode. parent val: {TreeList.targetNode.value}')
             return
 
         TreeList.currentId += 1
-        print(f'>>>>TreeList.currentId: {TreeList.currentId}')
 
         if node.left is not None:
             self.add_impl(node.left, val)
@@ -89,7 +85,6 @@ class TreeList:
             node.left = new_node
             TreeList.count += 1
             TreeList.added = True
-            print(f'TreeList: adding to the left. parent val: {node.value}')
             return
 
         if TreeList.added == True:
@@ -106,7 +101,6 @@ class TreeList:
             node.right = new_node
             TreeList.count += 1
             TreeList.added = True
-            print(f'TreeList: adding to the right. parent val: {node.value}')
         return
 
 

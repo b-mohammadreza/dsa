@@ -45,24 +45,18 @@ class GraphStruct:
 
         if self._adj_matrix[node_index][node_index] > 0:
             is_cyclic = True
-            print(f'GraphStruct_dfs(): ^^node self cycle found-index: {node_index}')
 
         if len(stack) > 2 and node_index != stack[-2] and node_index in stack:
             is_cyclic = True
-            print(f'GraphStruct_dfs(): ^^stack cycle found: {stack}')
 
         if node_index in visited:
-            print(f'GraphStruct_dfs(): node already visited - index: {node_index}')
             return is_cyclic
 
-        print(f'GraphStruct_dfs(): >>>>>>>>>>node traversed - index: {node_index}, data: {self._nodes[node_index]._data}')
         visited.append(node_index)
 
         stack.append(node_index)
-        print(f'GraphStruct_dfs(): ^^stack push(): {stack}')
 
         adj_arr = self._adj_matrix[node_index]
-        print(f'GraphStruct_dfs(): **********adjucent nodes for node-{node_index}: {adj_arr}')
 
         for index, val in enumerate(adj_arr):
             if val > 0:
@@ -71,7 +65,6 @@ class GraphStruct:
                     is_cyclic = True
 
         stack.pop()
-        print(f'GraphStruct_dfs(): ^^stack pop(): {stack}')
 
         return is_cyclic
 
@@ -83,22 +76,18 @@ class GraphStruct:
 
         while len(to_visit) > 0:
             next_index = to_visit.pop(0)
-            print(f'GraphStruct_bfs(): >>>>>>>>>>node traversed - index: {next_index}, data: {self._nodes[next_index]._data}')
 
             visited.append(next_index)
 
             adj_arr = self._adj_matrix[next_index]
-            print(f'GraphStruct_bfs(): **********adjucent nodes for node-{next_index}: {adj_arr}')
 
             for index, val in enumerate(adj_arr):
                 if val > 0 and index not in visited and index not in to_visit:
                     to_visit.append(index)
-                    print(f'GraphStruct_bfs(): node-{index} added into "t_visit" list')
 
 
 
     def is_cyclic(self) -> bool:
-        print('is_cyclic() called...')
         return self._dfs(0, [], [])
 
     def remove(self, val) -> (bool, Self):
@@ -116,7 +105,6 @@ class GraphStruct:
                 self._adj_matrix.pop(index)
                 break
         else:
-            print(f'_update_graph_remove(): remove row -> invalid index-{index}')
             return (False, None) 
 
         for row in self._adj_matrix:
@@ -159,7 +147,6 @@ class GraphStruct:
             # following is a min heap of unvisited nodes distances
             p_queue = PriorityQueue()
             init_vals = [distances[index] for index in unvisited]               # O(n) time, O(n) space
-            print(f'_dijkstra(): init_vals -> {init_vals}')
             p_queue.heapify(init_vals)                                          # O(n log n) > time, space O(n)
 
             _, dist = p_queue.dequeue()                                         # O(log n) time, space = 0
