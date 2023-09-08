@@ -12,7 +12,7 @@ def get_array_list(get_file_list) -> list[(list[int], str)]:
     arr_file_list = []
 
     if len(get_file_list) < 1:
-        raise ValueError('get_graph_list(): no test-case files found...')
+        raise ValueError('get_array_list(): no test-case files found...')
 
     for json_file in get_file_list: 
         with open(f'test/arrays/{json_file}', 'r') as fstr:
