@@ -86,14 +86,20 @@ def test_find(get_array_list) -> None:
     print('test_find(): started...')
 
     for arr, file_name in get_array_list:
-        if file_name == 'arr_1.json':
-            pass
+        if file_name == 'arr_01.json':
+            dsu_1 = dsu.DisjointSetUnion(arr)
+            assert dsu_1.find(0) == (True, 0, 0)
+            assert dsu_1.find(1) == (False, -1, None)
 
-        elif file_name == 'arr_2.json':
-            pass
+        elif file_name == 'arr_02.json':
+            dsu_2 = dsu.DisjointSetUnion(arr)
+            assert dsu_2.find('b') == (True, 1, 'b')
+            assert dsu_2.find('f') == (False, -1, None)
 
-        elif file_name == 'arr_3.json':
-            pass
+        elif file_name == 'arr_03.json':
+            dsu_3 = dsu.DisjointSetUnion(arr)
+            assert dsu_3.find((1, 3)) == (True, 2, (1, 3))
+            assert dsu_3.find((2, 3)) == (False, -1, None)
 
     print('test_find(): finished...')
 
@@ -101,13 +107,33 @@ def test_union(get_array_list) -> None:
     print('test_union(): started...')
 
     for arr, file_name in get_array_list:
-        if file_name == 'arr_1.json':
-            pass
+        if file_name == 'arr_01.json':
+            dsu_1 = dsu.DisjointSetUnion(arr)
+            assert dsu_1.union(0, 0) == True
+            assert len(dsu_1._collection) == 1
 
-        elif file_name == 'arr_2.json':
-            pass
+        elif file_name == 'arr_02.json':
+            dsu_2 = dsu.DisjointSetUnion(arr)
+            assert dsu_2.union('a', 'b') == True
+            assert dsu_2.find('b') == (True, 0, 'a')
+            assert dsu_2.find('a') == (True, 0, 'a')
+            assert dsu_2.find('c') == (True, 1, 'c')
+            assert len(dsu_2._collection) == 2
 
-        elif file_name == 'arr_3.json':
-            pass
+        elif file_name == 'arr_03.json':
+            dsu_3 = dsu.DisjointSetUnion(arr)
+            assert dsu_3.union((1, 3), (0, 2)) == True
+            assert dsu_3.find((0, 2)) == (True, 1, (1, 3))
+            assert dsu_3.find((1, 3)) == (True, 1, (1, 3))
+            assert dsu_3.find((0, 1)) == (True, 0, (0, 1))
+            assert len(dsu_3._collection) == 2
+
+            assert dsu_3.union((1, 3), (2, 2)) == False
+
+            assert dsu_3.union((0, 1), (0, 2)) == True
+            assert dsu_3.find((0, 2)) == (True, 0, (1, 3))
+            assert dsu_3.find((1, 3)) == (True, 0, (1, 3))
+            assert dsu_3.find((0, 1)) == (True, 0, (1, 3))
+            assert len(dsu_3._collection) == 1
 
     print('test_union(): finished...')
