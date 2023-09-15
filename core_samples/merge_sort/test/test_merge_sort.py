@@ -43,12 +43,12 @@ def test_merge_sort(get_array_list) -> None:
 
     for arr, file_name in get_array_list:
         if file_name == 'arr_01.json':
-            pass
+            assert merge_sort.msort(arr) == [1,5,7,7,10,12]
 
         elif file_name == 'arr_02.json':
-            pass
+            assert merge_sort.msort(arr) == [1,23,30,89,100]
 
         elif file_name == 'arr_03.json':
-            pass
+            assert merge_sort.msort(arr) == [1,3]
 
     print('test_merge_sort(): finished...')
