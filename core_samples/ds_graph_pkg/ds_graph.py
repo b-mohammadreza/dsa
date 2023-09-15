@@ -184,10 +184,6 @@ class GraphStruct:
         return unvisited_neighbors
 
     def _bellman_ford(self) -> (list[int], list[int]):
-        """ returns a combined list which contains 2 separate lists.
-        the first list [0..len(_nodes) - 1] is distances array.
-        the second list [len(_nodes)..(2 * len(_nodes)-1)] is prev_list """
-
         distances: list[int] = [sys.maxsize for _ in range(len(self._nodes))]   # O(n) space
         prev_list: list[int] = [None for _ in range(len(self._nodes))]          # O(n) space
 
