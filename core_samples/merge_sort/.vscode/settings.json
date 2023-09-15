@@ -1,0 +1,10 @@
+{
+    "python.testing.pytestArgs": [
+         // "--capture=tee-sys",
+        // "--show-capture=stdout",
+        "-s",
+       "test"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
+}
