@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
-def msort(arr: list) -> list:
+from typing import Any
+
+def msort(arr: list[Any]) -> list[Any]:
     """ Sorts the elements in ascending order """
 
     if len(arr) == 0:
