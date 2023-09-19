@@ -4,6 +4,18 @@ from typing import Self
 import sys
 sys.path.append('..')
 from priority_queue.priority_queue import PriorityQueue
+from merge_sort.merge_sort import msort
+
+class EdgeInfo:
+    def __init__(self, edge: tuple, weight: int) -> None:
+        self._edge = edge
+        self._weight = weight
+
+    def __lt__(self, other: Self):
+        return self._weight < other._weight
+
+    def __le__(self, other: Self):
+        return self._weight <= other._weight
 
 class GraphNode:
     def __init__(self, data: str) -> None:
@@ -26,6 +38,10 @@ class GraphStruct:
     SHORTEST_PATH_DIJKSTRA = 0
     SHORTEST_PATH_BELLMAN_FORD = 1
 
+    # to determine minimum spanning tree algorithm
+    MIN_SPAN_KRUSKAL = 0
+    MIN_SPAN_PRIM = 1
+
     def __init__(self, nodes: list[GraphNode], adj_matrix: list[list[int]]) -> None:
         self._adj_matrix = adj_matrix
         self._nodes = nodes
@@ -38,7 +54,7 @@ class GraphStruct:
          which is not connected to others, need to initiate
          the traverse function on each node separately """
 
-        if t_type == GraphStruct.T_TYPE_DFS:
+        if t_type == self.T_TYPE_DFS:
             self._dfs(0, [], [])
         else:
             self._bfs(0)
@@ -98,7 +114,7 @@ class GraphStruct:
             if node._data == val:
                 self._nodes.pop(index)
 
-                return self._update_graph(GraphStruct._U_REMOVE, index)
+                return self._update_graph(self._U_REMOVE, index)
 
         return (False, None)
         
@@ -123,9 +139,9 @@ class GraphStruct:
 
     def _update_graph(self, cmd, index) -> (bool, Self):
         match cmd:
-            case GraphStruct._U_REMOVE:
+            case self._U_REMOVE:
                 return self._update_graph_remove(index)
-            case GraphStruct._U_ADD:
+            case self._U_ADD:
                 return (False, None)
             case _:
                 return (False, None)
@@ -133,7 +149,7 @@ class GraphStruct:
     def shortest_paths(self, algo):
         """implements Dijkstra's or Bellman-Ford's algorithms"""
 
-        if algo == GraphStruct.SHORTEST_PATH_DIJKSTRA:
+        if algo == self.SHORTEST_PATH_DIJKSTRA:
             return self._dijkstra()
         
         return self._bellman_ford()
@@ -201,8 +217,36 @@ class GraphStruct:
 
         return (distances, prev_list)
 
-    def min_spanning_tree(self) -> None:
+    def min_spanning_tree(self, algorithm) -> list[tuple]:
         """implements Kruskal's or Prim's algorithms"""
+        if algorithm == self.MIN_SPAN_KRUSKAL:
+            return self._kruskal()
+        
+        return self._prim()
+
+    def _get_edge_infos(self) -> list[EdgeInfo]:
+        edge_infos: list[EdgeInfo] = []
+
+        for index_1, weights in enumerate(self._adj_matrix):
+            for index_2, weight in enumerate(weights):
+                edge_infos.append(EdgeInfo(edge=(index_1, index_2), weight=weight))
+
+        return edge_infos
+
+    def _kruskal(self) -> list[tuple]:
+        """ Each graph edge is represented by a tuple: (index_1, index_2),
+        in which 'index_1' is the index of 1st node and 'index_2' is the index
+        of the 2nd node. """
+
+        min_span_tree: list[tuple] = []
+        edge_infos: list[EdgeInfo] = self._get_edge_infos()
+
+        sorted_edge_infos = msort(edge_infos)
+
+        for edge_info in sorted_edge_infos:
+            pass
+
+    def _prim(self) -> list[tuple]:
         pass
 
 if __name__ == '__main__':
