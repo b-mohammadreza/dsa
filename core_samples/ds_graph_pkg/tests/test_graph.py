@@ -110,3 +110,22 @@ def test_bellman_ford(get_graph_list) -> None:
 
     print('test_bellman_ford(): finished...')
 
+def test_kruskal(get_graph_list) -> None:
+    print('test_kruskal(): started...')
+
+    _graph: ds_graph.GraphStruct
+    for _graph, file_name in get_graph_list:
+        if file_name == 'graph_11.json':
+            min_span_tree: list[tuple] = _graph.min_spanning_tree(ds_graph.GraphStruct.MIN_SPAN_KRUSKAL)
+            assert min_span_tree == [(0,1), (0,2), (2,3)]
+            
+        if file_name == 'graph_12.json':
+            min_span_tree: list[tuple] = _graph.min_spanning_tree(ds_graph.GraphStruct.MIN_SPAN_KRUSKAL)
+            assert min_span_tree == [(0,1), (0,3), (2,3)]
+            
+        if file_name == 'graph_13.json':
+            min_span_tree: list[tuple] = _graph.min_spanning_tree(ds_graph.GraphStruct.MIN_SPAN_KRUSKAL)
+            assert min_span_tree == [(0,1), (0,3), (2,3)]
+
+    print('test_kruskal(): finished...')
+

@@ -3,8 +3,10 @@
 from typing import Self
 import sys
 sys.path.append('..')
+
 from priority_queue.priority_queue import PriorityQueue
 from merge_sort.merge_sort import msort
+from disjoint_set_union.dsu import DisjointSetUnion
 
 class EdgeInfo:
     def __init__(self, edge: tuple, weight: int) -> None:
@@ -16,6 +18,18 @@ class EdgeInfo:
 
     def __le__(self, other: Self):
         return self._weight <= other._weight
+    
+    def __eq__(self, other: Self):
+        if self._edge == other._edge and self._weight == other._weight:
+            return True
+
+        if      self._edge[0] == other._edge[1] \
+            and self._edge[1] == other._edge[0] \
+            and self._weight  == other._weight:
+            return True
+        
+        return False
+        
 
 class GraphNode:
     def __init__(self, data: str) -> None:
@@ -229,7 +243,11 @@ class GraphStruct:
 
         for index_1, weights in enumerate(self._adj_matrix):
             for index_2, weight in enumerate(weights):
-                edge_infos.append(EdgeInfo(edge=(index_1, index_2), weight=weight))
+                if weight > 0:
+                    edge_info = EdgeInfo(edge=(index_1, index_2), weight=weight)
+
+                    if edge_info not in edge_infos:
+                        edge_infos.append(edge_info)
 
         return edge_infos
 
@@ -243,8 +261,36 @@ class GraphStruct:
 
         sorted_edge_infos = msort(edge_infos)
 
+        # Initializing a Disjoint Set Union data structure to detect
+        # a cylce after traversing each edge
+        dsu_obj = DisjointSetUnion(range(len(self._adj_matrix)))
+
+        edge_info: EdgeInfo
         for edge_info in sorted_edge_infos:
-            pass
+            if len(min_span_tree) == self.numberof_nodes() - 1:
+                break
+
+            try:
+                (result, _, set_id_1) = dsu_obj.find(edge_info._edge[0])
+                if result == False:
+                    raise ValueError
+
+                (result, _, set_id_2) = dsu_obj.find(edge_info._edge[-1])
+                if result == False:
+                    raise ValueError
+                
+                if set_id_1 == set_id_2:
+                    print(f'_kruskal(): cycle detected when processing the\
+                    ({edge_info._edge[0]},{edge_info._edge[-1]}) edge.')
+                else:
+                    dsu_obj.union(edge_info._edge[0], edge_info._edge[-1])
+                    min_span_tree.append(edge_info._edge)
+
+            except ValueError as e:
+                print(f'_kruskal(): one of the ({edge_info._edge[0]} or {edge_info._edge[-1]})\
+                       nodes not found in DSU.')
+                
+        return min_span_tree
 
     def _prim(self) -> list[tuple]:
         pass
