@@ -257,25 +257,25 @@ class GraphStruct:
         of the 2nd node. """
 
         min_span_tree: list[tuple] = []
-        edge_infos: list[EdgeInfo] = self._get_edge_infos()
+        edge_infos: list[EdgeInfo] = self._get_edge_infos()                     # O(n^2)
 
-        sorted_edge_infos = msort(edge_infos)
+        sorted_edge_infos = msort(edge_infos)                                   # O(E log E)
 
         # Initializing a Disjoint Set Union data structure to detect
         # a cylce after traversing each edge
         dsu_obj = DisjointSetUnion(range(len(self._adj_matrix)))
 
         edge_info: EdgeInfo
-        for edge_info in sorted_edge_infos:
+        for edge_info in sorted_edge_infos:                                     # O(n)
             if len(min_span_tree) == self.numberof_nodes() - 1:
                 break
 
             try:
-                (result, _, set_id_1) = dsu_obj.find(edge_info._edge[0])
+                (result, _, set_id_1) = dsu_obj.find(edge_info._edge[0])        # O(n)
                 if result == False:
                     raise ValueError
 
-                (result, _, set_id_2) = dsu_obj.find(edge_info._edge[-1])
+                (result, _, set_id_2) = dsu_obj.find(edge_info._edge[-1])       # O(n)
                 if result == False:
                     raise ValueError
                 
@@ -283,7 +283,7 @@ class GraphStruct:
                     print(f'_kruskal(): cycle detected when processing the\
                     ({edge_info._edge[0]},{edge_info._edge[-1]}) edge.')
                 else:
-                    dsu_obj.union(edge_info._edge[0], edge_info._edge[-1])
+                    dsu_obj.union(edge_info._edge[0], edge_info._edge[-1])      # O(n)
                     min_span_tree.append(edge_info._edge)
 
             except ValueError as e:
