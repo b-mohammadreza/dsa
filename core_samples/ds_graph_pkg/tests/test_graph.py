@@ -119,13 +119,47 @@ def test_kruskal(get_graph_list) -> None:
             min_span_tree: list[tuple] = _graph.min_spanning_tree(ds_graph.GraphStruct.MIN_SPAN_KRUSKAL)
             assert min_span_tree == [(0,1), (0,2), (2,3)]
             
-        if file_name == 'graph_12.json':
+        elif file_name == 'graph_12.json':
             min_span_tree: list[tuple] = _graph.min_spanning_tree(ds_graph.GraphStruct.MIN_SPAN_KRUSKAL)
             assert min_span_tree == [(0,1), (0,3), (2,3)]
             
-        if file_name == 'graph_13.json':
+        elif file_name == 'graph_13.json':
             min_span_tree: list[tuple] = _graph.min_spanning_tree(ds_graph.GraphStruct.MIN_SPAN_KRUSKAL)
             assert min_span_tree == [(0,1), (0,3), (2,3)]
 
     print('test_kruskal(): finished...')
 
+# def get_combinations(t_list: list[tuple]) -> list[list[tuple]]:
+#     """ Operates on tuples with 2 elements only """
+
+#     combinations: list[list[tuple]] = []
+
+#     if len(t_list) < 1:
+#         combinations += []
+#         return combinations
+
+#     if len(t_list) == 1:
+#         combinations += t_list
+#         combinations += [(t_list[1], t_list[0])]
+#         return combinations
+
+#     combinations += 
+
+def test_prim(get_graph_list) -> None:
+    print('test_prim(): started...')
+
+    _graph: ds_graph.GraphStruct
+    for _graph, file_name in get_graph_list:
+        if file_name == 'graph_11.json':
+            min_span_tree: list[tuple] = _graph.min_spanning_tree(ds_graph.GraphStruct.MIN_SPAN_PRIM)
+            assert min_span_tree == [(0,1), (0,2), (2,3)]
+            
+        elif file_name == 'graph_12.json':
+            min_span_tree: list[tuple] = _graph.min_spanning_tree(ds_graph.GraphStruct.MIN_SPAN_PRIM)
+            assert min_span_tree == [(0,1), (0,3), (2,3)]
+            
+        # elif file_name == 'graph_13.json':
+        #     min_span_tree: list[tuple] = _graph.min_spanning_tree(ds_graph.GraphStruct.MIN_SPAN_PRIM)
+        #     assert min_span_tree == [(0,1), (0,3), (2,3)]
+
+    print('test_prim(): finished...')

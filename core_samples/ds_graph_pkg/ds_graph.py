@@ -238,7 +238,7 @@ class GraphStruct:
         
         return self._prim()
 
-    def _get_edge_infos(self) -> list[EdgeInfo]:
+    def _get_edge_infos_kruskal(self) -> list[EdgeInfo]:
         edge_infos: list[EdgeInfo] = []
 
         for index_1, weights in enumerate(self._adj_matrix):
@@ -256,8 +256,10 @@ class GraphStruct:
         in which 'index_1' is the index of 1st node and 'index_2' is the index
         of the 2nd node. """
 
+        print(f'Get Minimum Spanning Tree using the Kruskal\'s algorithm...')
+
         min_span_tree: list[tuple] = []
-        edge_infos: list[EdgeInfo] = self._get_edge_infos()                     # O(n^2)
+        edge_infos: list[EdgeInfo] = self._get_edge_infos_kruskal()                     # O(n^2)
 
         sorted_edge_infos = msort(edge_infos)                                   # O(E log E)
 
@@ -292,8 +294,38 @@ class GraphStruct:
                 
         return min_span_tree
 
+    def _get_edge_infos_prim(self, u: int, v_set: set[int]) -> list[EdgeInfo]:
+        edge_infos: list[EdgeInfo] = []
+
+        for v, weight in enumerate(self._adj_matrix[u]):
+            if weight > 0 and v not in v_set:
+                edge_infos.append(EdgeInfo((u,v), weight))
+                # print(f'>>>> edge: {edge_infos[-1]._edge}, weight: {edge_infos[-1]._weight}')
+
+        return edge_infos
+
     def _prim(self) -> list[tuple]:
-        pass
+        print(f'Get Minimum Spanning Tree using the Prim\'s algorithm...')
+
+        min_span_tree: list[tuple] = []
+        vertices: list[int] = range(len(self._adj_matrix))
+        v_set: set[int] = {vertices[0]}
+
+        vertex = vertices[0]
+        min_heap = PriorityQueue()
+
+        while len(v_set) < len(vertices):
+            edge_infos: list[EdgeInfo] = self._get_edge_infos_prim(vertex, v_set)
+
+            for edge_info in edge_infos:
+                min_heap.enqueue(edge_info)
+
+            (_, edge_info) = min_heap.dequeue()
+            vertex = edge_info._edge[1]
+            min_span_tree.append(edge_info._edge)
+            v_set.add(vertex)
+
+        return min_span_tree
 
 if __name__ == '__main__':
     # graph = GraphStruct([GraphNode('aaa'), GraphNode('aab'), GraphNode('abb'), GraphNode('bbb')]
