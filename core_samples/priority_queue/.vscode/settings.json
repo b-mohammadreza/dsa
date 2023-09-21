@@ -1,8 +1,8 @@
 {
     "python.testing.pytestArgs": [
-        "--capture=tee-sys",
-        "--show-capture=stdout",
-        // "-s",
+        // "--capture=tee-sys",
+        // "--show-capture=stdout",
+        "-s",
         "test"
     ],
     "python.testing.unittestEnabled": false,

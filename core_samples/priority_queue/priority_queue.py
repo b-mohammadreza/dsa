@@ -1,17 +1,15 @@
 #!/usr/bin/python
 
-def is_min_heap(arr: list[int]) -> bool:
-    pass
+from typing import Any
 
 class PriorityQueue:
-    """ for the sake of simplicity the values which can be stored in this
-     data structure are 'int' values. it implements min binary heap """
+    """ It implements min binary heap """
 
     def __init__(self) -> None:
-        self._min_heap: list[int] = []
+        self._min_heap: list[Any] = []
         self._is_min_heap: bool = False
 
-    def heapify(self, arr: list[int]) -> list[int]:
+    def heapify(self, arr: list[Any]) -> list[Any]:
         if len(self._min_heap) > 0:
             print('PriorityQueue::heapify(): _min_heap already initialized...')
             return
@@ -23,7 +21,7 @@ class PriorityQueue:
 
         return self._min_heap
 
-    def is_min_heap(self, arr: list[int] = None) -> bool:
+    def is_min_heap(self, arr: list[Any] = None) -> bool:
         if arr == None:
             if len(self._min_heap) < 1:
                 return True
@@ -50,7 +48,7 @@ class PriorityQueue:
 
         return True
 
-    def enqueue(self, priority: int) -> list[int]:
+    def enqueue(self, priority: Any) -> list[Any]:
         """ to add a new element to the min heap data structue """
         self._min_heap.append(priority)
 
@@ -75,7 +73,7 @@ class PriorityQueue:
 
         return self._min_heap
 
-    def dequeue(self) -> (list[int], int):
+    def dequeue(self) -> (list[Any], Any):
         """ to remove the root element from the min heap data structure """
         arr_len = len(self._min_heap)
         if arr_len < 1:
@@ -115,7 +113,7 @@ class PriorityQueue:
 
         return (self._min_heap, root)
 
-    def peek(self) -> int:
+    def peek(self) -> Any:
         return self._min_heap[0]
 
 if __name__ == '__main__':
