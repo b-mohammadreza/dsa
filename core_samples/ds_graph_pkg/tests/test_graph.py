@@ -2,6 +2,7 @@ from .. import ds_graph
 import pytest
 import json
 import os
+import copy
 
 def as_graph_struct(struct) -> ds_graph.GraphStruct:
     graph_nodes: list[ds_graph.GraphNode] = []
@@ -129,21 +130,44 @@ def test_kruskal(get_graph_list) -> None:
 
     print('test_kruskal(): finished...')
 
-# def get_combinations(t_list: list[tuple]) -> list[list[tuple]]:
-#     """ Operates on tuples with 2 elements only """
+def get_combinations(t_list: list[tuple]) -> list[list[tuple]]:
+    """ Operates on tuples with 2 elements only """
+    
+    combinations: list[list[tuple]] = []
+    
+    if len(t_list) < 1:
+        return combinations
 
-#     combinations: list[list[tuple]] = []
+    if len(t_list) == 1:
+        combinations.append(t_list)
+        combinations.append( [(t_list[0][1], t_list[0][0])] )
 
-#     if len(t_list) < 1:
-#         combinations += []
-#         return combinations
+        return combinations
 
-#     if len(t_list) == 1:
-#         combinations += t_list
-#         combinations += [(t_list[1], t_list[0])]
-#         return combinations
+    t_lists_1: list[list[tuple]] = get_combinations(t_list[1:])
+    t_lists_2: list[list[tuple]] = copy.deepcopy(t_lists_1)
 
-#     combinations += 
+    ts: list[tuple]
+    for ts in t_lists_1:
+        ts.insert(0, t_list[0])
+
+    combinations += t_lists_1
+
+    for ts in t_lists_2:
+        ts.insert(0, (t_list[0][1], t_list[0][0]))
+
+    combinations += t_lists_2
+
+    return combinations
+
+def test_get_combinations() -> None:
+    print('test_get_combinations(): started...')
+
+    combinations = [[(1,2), (3,4)],[(1,2), (4,3)],[(2,1), (3,4)],[(2,1), (4,3)]]
+    assert get_combinations([(1,2), (3,4)]) == combinations
+
+    print('test_get_combinations(): finished...')
+
 
 def test_prim(get_graph_list) -> None:
     print('test_prim(): started...')
@@ -156,10 +180,10 @@ def test_prim(get_graph_list) -> None:
             
         elif file_name == 'graph_12.json':
             min_span_tree: list[tuple] = _graph.min_spanning_tree(ds_graph.GraphStruct.MIN_SPAN_PRIM)
-            assert min_span_tree == [(0,1), (0,3), (2,3)]
-            
-        # elif file_name == 'graph_13.json':
-        #     min_span_tree: list[tuple] = _graph.min_spanning_tree(ds_graph.GraphStruct.MIN_SPAN_PRIM)
-        #     assert min_span_tree == [(0,1), (0,3), (2,3)]
+            assert min_span_tree in get_combinations( [(0,1), (0,3), (2,3)] )
+
+        elif file_name == 'graph_13.json':
+            min_span_tree: list[tuple] = _graph.min_spanning_tree(ds_graph.GraphStruct.MIN_SPAN_PRIM)
+            assert min_span_tree in get_combinations( [(0,1), (0,3), (2,3)] )
 
     print('test_prim(): finished...')

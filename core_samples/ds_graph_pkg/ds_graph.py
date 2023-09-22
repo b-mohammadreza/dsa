@@ -314,14 +314,21 @@ class GraphStruct:
         vertex = vertices[0]
         min_heap = PriorityQueue()
 
-        while len(v_set) < len(vertices):
-            edge_infos: list[EdgeInfo] = self._get_edge_infos_prim(vertex, v_set)
+        while len(v_set) < len(vertices):                                                   # O(V * V)
+            edge_infos: list[EdgeInfo] = self._get_edge_infos_prim(vertex, v_set)           # O(V)
 
             for edge_info in edge_infos:
-                min_heap.enqueue(edge_info)
+                min_heap.enqueue(edge_info)                                                 # O(log E)
 
-            (_, edge_info) = min_heap.dequeue()
-            vertex = edge_info._edge[1]
+            while True:
+                (_, edge_info) = min_heap.dequeue()                                         # O(V) max?
+                if edge_info is None:
+                    break
+
+                vertex = edge_info._edge[1]
+                if vertex not in v_set:
+                    break
+
             min_span_tree.append(edge_info._edge)
             v_set.add(vertex)
 
