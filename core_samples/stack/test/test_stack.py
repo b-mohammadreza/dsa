@@ -1,4 +1,4 @@
-from .. import priority_queue
+from .. import stack
 import pytest
 import json
 import os
@@ -39,9 +39,92 @@ def test_is_empty(get_array_list) -> None:
 
     for arr, file_name in get_array_list:
         if file_name == 'arr_01.json':
-            pass
+            s: stack.Stack = stack.Stack()
+
+            for item in arr:
+                s.push(item)
+
+            assert s.is_empty() == True
 
         elif file_name == 'arr_02.json':
-            pass
+            s: stack.Stack = stack.Stack()
+
+            for item in arr:
+                s.push(item)
+
+            assert s.is_empty() == False
 
     print('is_empty(): finished...')
+
+def test_peek(get_array_list) -> None:
+    print('test_peek(): started...')
+
+    for arr, file_name in get_array_list:
+        if file_name == 'arr_01.json':
+            s: stack.Stack = stack.Stack()
+
+            for item in arr:
+                s.push(item)
+
+            assert s.peek() == None
+
+        elif file_name == 'arr_02.json':
+            s: stack.Stack = stack.Stack()
+
+            for item in arr:
+                s.push(item)
+
+            assert s.peek() == 4
+
+    print('test_peek(): finished...')
+
+def test_push(get_array_list) -> None:
+    print('test_push(): started...')
+
+    for arr, file_name in get_array_list:
+        if file_name == 'arr_01.json':
+            s: stack.Stack = stack.Stack()
+
+            for item in arr:
+                s.push(item)
+
+            assert s.peek() == None
+
+        elif file_name == 'arr_02.json':
+            s: stack.Stack = stack.Stack()
+
+            for item in arr:
+                s.push(item)
+                assert s.peek() == item
+
+            assert s.peek() == 4
+
+    print('test_push(): finished...')
+
+def test_pop(get_array_list) -> None:
+    print('test_pop(): started...')
+
+    for arr, file_name in get_array_list:
+        if file_name == 'arr_01.json':
+            s: stack.Stack = stack.Stack()
+
+            for item in arr:
+                s.push(item)
+
+            assert s.pop() == None
+
+        elif file_name == 'arr_02.json':
+            s: stack.Stack = stack.Stack()
+
+            for item in arr:
+                s.push(item)
+                assert s.peek() == item
+
+            for _ in range(len(arr)):
+                peek_item = s.peek()
+                pop_item = s.pop()
+                assert peek_item == pop_item
+
+            assert s.pop() == None
+
+    print('test_pop(): finished...')

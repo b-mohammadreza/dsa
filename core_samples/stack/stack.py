@@ -6,7 +6,7 @@ class Stack:
     def __init__(self) -> None:
         self._container: list[Any] = []
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         return len(self._container) == 0
     
     def push(self, item: Any) -> int:
