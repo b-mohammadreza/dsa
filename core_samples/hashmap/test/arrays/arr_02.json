@@ -1,0 +1,4 @@
+{
+    "data_type":"int",
+    "arr":[ [1100, "value_1"], ["abcd", "value_2"], [900245, "value_3"] ]
+}
