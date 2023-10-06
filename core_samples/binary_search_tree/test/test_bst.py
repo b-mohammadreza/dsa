@@ -34,6 +34,38 @@ def get_array(data_type: str, arr: list[Any]) -> list[Any]:
     # ignoring data_type for now.
     return arr
 
-def test_1(get_array_list) -> None:
-    print('test_1(): started...')
-    print('test_1(): finished...')
+def test_add_node(get_array_list) -> None:
+    print('test_add_node(): started...')
+
+    for arr, file_name in get_array_list:
+        if file_name == 'arr_01.json':
+            bstree = bst.BST(arr)
+
+            assert bstree._root != None
+
+            # assert bstree._root._value == 1
+            # assert bstree._root._lheight == 0
+            # assert bstree._root._rheight == 3
+
+            # assert bstree._root._left == None
+
+            # assert bstree._root._right._value == 12
+            # assert bstree._root._right._lheight == 2
+            # assert bstree._root._right._rheight  == 1
+
+            # assert bstree._root._right._left._value == 3
+            # assert bstree._root._right._left._lheight == 0
+            # assert bstree._root._right._left._rheight == 1
+
+            # assert bstree._root._right._left._right._value == 10
+            # assert bstree._root._right._left._right._lheight == 0
+            # assert bstree._root._right._left._right._rheight == 0
+
+            # assert bstree._root._right._right._value == 25
+            # assert bstree._root._right._right._lheight == 0
+            # assert bstree._root._right._right._rheight == 0
+
+        # elif file_name == 'arr_02.json':
+        #     bstree = bst.BST(arr)
+
+    print('test_add_node(): finished...')
