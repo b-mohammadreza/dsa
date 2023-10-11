@@ -48,22 +48,31 @@ def test_add_node(get_array_list) -> None:
             assert bstree._root._rheight == 3
 
             assert bstree._root._left == None
+            assert bstree._root._parent == None
 
             assert bstree._root._right._value == 12
             assert bstree._root._right._lheight == 2
             assert bstree._root._right._rheight  == 1
 
+            assert bstree._root._right._parent._value  == 1
+
             assert bstree._root._right._left._value == 3
             assert bstree._root._right._left._lheight == 0
             assert bstree._root._right._left._rheight == 1
+
+            assert bstree._root._right._left._parent._value == 12
 
             assert bstree._root._right._left._right._value == 10
             assert bstree._root._right._left._right._lheight == 0
             assert bstree._root._right._left._right._rheight == 0
 
+            assert bstree._root._right._left._right._parent._value == 3
+
             assert bstree._root._right._right._value == 25
             assert bstree._root._right._right._lheight == 0
             assert bstree._root._right._right._rheight == 0
+
+            assert bstree._root._right._right._parent._value == 12
 
         elif file_name == 'arr_02.json':
             bstree = bst.BST(arr)
@@ -74,16 +83,24 @@ def test_add_node(get_array_list) -> None:
             assert bstree._root._lheight == 1
             assert bstree._root._rheight == 2
 
+            assert bstree._root._parent == None
+
             assert bstree._root._left._value == 1
             assert bstree._root._left._lheight == 0
             assert bstree._root._left._rheight  == 0
+
+            assert bstree._root._left._parent._value  == 3
 
             assert bstree._root._right._value == 5
             assert bstree._root._right._lheight == 1
             assert bstree._root._right._rheight  == 0
 
+            assert bstree._root._right._parent._value  == 3
+
             assert bstree._root._right._left._value == 4
             assert bstree._root._right._left._lheight == 0
             assert bstree._root._right._left._rheight == 0
+
+            assert bstree._root._right._left._parent._value == 5
 
     print('test_add_node(): finished...')

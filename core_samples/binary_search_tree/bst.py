@@ -7,6 +7,7 @@ class Node:
         self._value: Any = None
         self._lheight: int = 0
         self._rheight: int = 0
+        self._parent: Node = None
         self._left: Node = None
         self._right: Node = None
 
@@ -37,21 +38,42 @@ class BST:
         if value <= node._value:
             if node._left == None:
                 node._left = Node()
+                node._left._parent = node
 
             lheight, rheight = self.add_node(node._left, value)
             node._lheight = max(lheight, rheight) + 1
         else:
             if node._right == None:
                 node._right = Node()
+                node._right._parent = node
 
             lheight, rheight = self.add_node(node._right, value)
             node._rheight = max(lheight, rheight) + 1
 
         return (node._lheight, node._rheight)
-        
+    
+    def _remove_links(self, node: Node):
+        if node._right != None:
+            pass
 
-    def remove_node(self, value: Any):
-        pass
+    def remove_node(self, node: Node, value: Any) -> bool:
+        if node == None:
+            return False
+
+        if node._value == value:
+            self._remove_links(node)
+            return True
+
+        deleted: bool = False
+
+        if value <= node._value:
+            deleted = self.remove_node(node._left, value)
+
+        else:
+            deleted = self.remove_node(node._right, value)
+
+        return deleted
+        
 
 if __name__ == "__main__":
     pass
