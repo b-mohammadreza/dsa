@@ -52,16 +52,55 @@ class BST:
 
         return (node._lheight, node._rheight)
     
-    def _remove_links(self, node: Node):
-        if node._right != None:
-            pass
+    def _remove_node_leaf(self, node: Node) -> None:
+        if node is self._root:
+            node._value = None
+        elif node._parent._left is node:
+            node._parent._left = None
+        elif node._parent._right is node:
+            node._parent._right = None
+        
+    def _remove_node_with_one_child(self, node: Node) -> None:
+        child: Node = node._left
+        if child == None:
+            child = node._right
+
+        if node is self._root:
+            self._root = child
+        elif node._parent._left is node:
+            node._parent._left = child
+        elif node._parent._right is node:
+            node._parent._right = child
+
+    def _get_inorder_successor_node(self, node: Node) -> Node:
+        if node._left == None:
+            return node
+
+        return self._get_inorder_successor_node(node._left)
+
+    def _remove_node_with_children(self, node: Node) -> None:
+        node_to_rm = self._get_inorder_successor_node(node._right)
+        node._value = node_to_rm._value
+
+        self.remove_node(node_to_rm, node_to_rm._value)
+
+    def _remove_node(self, node: Node) -> None:
+        if node._right == None and node._left == None:
+            self._remove_node_leaf(node)
+            return
+
+        if node._right == None or node._left == None:
+            self._remove_node_with_one_child(node)
+            return
+            
+        self._remove_node_with_children(node)
 
     def remove_node(self, node: Node, value: Any) -> bool:
         if node == None:
             return False
 
         if node._value == value:
-            self._remove_links(node)
+            self._remove_node(node)
             return True
 
         deleted: bool = False
