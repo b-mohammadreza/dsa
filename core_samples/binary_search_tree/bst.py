@@ -72,17 +72,24 @@ class BST:
         elif node._parent._right is node:
             node._parent._right = child
 
-    def _get_inorder_successor_node(self, node: Node) -> Node:
+    def _get_inorder_successor_node(self, node: Node, nodes_to_update: list[Node]) -> (Node,  list[Node]):
         if node._left == None:
-            return node
+            return (node, nodes_to_update)
 
-        return self._get_inorder_successor_node(node._left)
+        nodes_to_update.append(node)
+        return self._get_inorder_successor_node(node._left, nodes_to_update)
 
     def _remove_node_with_children(self, node: Node) -> None:
-        node_to_rm = self._get_inorder_successor_node(node._right)
+        (node_to_rm, nodes_to_update) = self._get_inorder_successor_node(node._right, [])
         node._value = node_to_rm._value
 
-        self.remove_node(node_to_rm, node_to_rm._value)
+        self._remove_node(node_to_rm)
+
+        node._rheight -= 1
+
+        node_item: Node
+        for node_item in nodes_to_update:
+            node_item._lheight -= 1
 
     def _remove_node(self, node: Node) -> None:
         if node._right == None and node._left == None:
@@ -107,9 +114,13 @@ class BST:
 
         if value <= node._value:
             deleted = self.remove_node(node._left, value)
+            if deleted == True:
+                node._lheight -= 1
 
         else:
             deleted = self.remove_node(node._right, value)
+            if deleted == True:
+                node._rheight -= 1
 
         return deleted
         
