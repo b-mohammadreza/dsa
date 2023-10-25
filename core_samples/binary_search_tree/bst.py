@@ -21,6 +21,40 @@ class BST:
         for value in arr:
             self.add_node(self._root, value)
 
+    def _rebalance_tree(self, node: Node) -> None:
+        if abs(node.get_bf()) < 2:
+            return
+        
+        # right heavy
+        if node.get_bf() < 0:
+            if node._right.get_bf() <= 0:
+                # RR -> rotate left
+                temp_node = node._right
+                temp_node._parent = node._parent
+
+                if node._right._parent == None:
+                    self._root = node._right
+
+                node._parent = node._right
+                node._right._left = node
+                node._right = temp_node._left
+
+                # adjust the heights
+                node._rheight = max(node._right._rheight, node._right._lheight)
+                node._parent._lheight = max(node._rheight, node._lheight)
+            else:
+                # RL -> rotate right then left
+                pass
+
+        # left heavy
+        if node.get_bf() > 0:
+            if node._left.get_bf() >= 0:
+                # LL -> rotate right
+                pass
+            else:
+                # LR -> rotate left then right
+                pass
+
     def add_node(self, node: Node, value: Any) -> (int, int):
         """ Need to create a balanced BST.
         Returns current node left and right subtrees heights. """
@@ -49,6 +83,8 @@ class BST:
 
             lheight, rheight = self.add_node(node._right, value)
             node._rheight = max(lheight, rheight) + 1
+
+        self._rebalance_tree() 
 
         return (node._lheight, node._rheight)
     
@@ -103,6 +139,8 @@ class BST:
         self._remove_node_with_children(node)
 
     def remove_node(self, node: Node, value: Any) -> bool:
+        """ Need to create balanced BST """
+
         if node == None:
             return False
 
