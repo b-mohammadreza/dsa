@@ -15,47 +15,52 @@ class Node:
         return self._rheight - self._lheight
 
 class BST:
-    def __init__(self, arr: list[Any]) -> None:
+    def __init__(self, arr: list[Any], rebalance: bool) -> None:
         self._root : Node = Node()
 
         for value in arr:
-            self.add_node(self._root, value)
+            self.add_node(self._root, value, rebalance)
 
     def _rebalance_tree(self, node: Node) -> None:
         if abs(node.get_bf()) < 2:
             return
         
         # right heavy
-        if node.get_bf() < 0:
-            if node._right.get_bf() <= 0:
+        if node.get_bf() > 0:
+            if node._right.get_bf() >= 0:
                 # RR -> rotate left
                 temp_node = node._right
-                temp_node._parent = node._parent
+
+                node._right._parent = node._parent
 
                 if node._right._parent == None:
                     self._root = node._right
 
                 node._parent = node._right
-                node._right._left = node
-                node._right = temp_node._left
+                node._right = node._right._left
+                temp_node._left = node
 
                 # adjust the heights
-                node._rheight = max(node._right._rheight, node._right._lheight)
+                if node._right == None:
+                    node._rheight = 0
+                else:
+                    node._rheight = max(node._right._rheight, node._right._lheight)
+
                 node._parent._lheight = max(node._rheight, node._lheight)
             else:
                 # RL -> rotate right then left
                 pass
 
         # left heavy
-        if node.get_bf() > 0:
-            if node._left.get_bf() >= 0:
+        if node.get_bf() < 0:
+            if node._left.get_bf() <= 0:
                 # LL -> rotate right
                 pass
             else:
                 # LR -> rotate left then right
                 pass
 
-    def add_node(self, node: Node, value: Any) -> (int, int):
+    def add_node(self, node: Node, value: Any, rebalance: bool) -> (int, int):
         """ Need to create a balanced BST.
         Returns current node left and right subtrees heights. """
 
@@ -74,17 +79,18 @@ class BST:
                 node._left = Node()
                 node._left._parent = node
 
-            lheight, rheight = self.add_node(node._left, value)
+            lheight, rheight = self.add_node(node._left, value, rebalance)
             node._lheight = max(lheight, rheight) + 1
         else:
             if node._right == None:
                 node._right = Node()
                 node._right._parent = node
 
-            lheight, rheight = self.add_node(node._right, value)
+            lheight, rheight = self.add_node(node._right, value, rebalance)
             node._rheight = max(lheight, rheight) + 1
 
-        self._rebalance_tree() 
+        if rebalance == True:
+            self._rebalance_tree(node) 
 
         return (node._lheight, node._rheight)
     
