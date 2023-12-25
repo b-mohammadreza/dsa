@@ -21,6 +21,22 @@ class BST:
         for value in arr:
             self.add_node(self._root, value, rebalance)
 
+    def _rr_rotate_left(self, node: Node):
+        temp_node = node._right
+
+        node._right._parent = node._parent
+
+        if node._right._parent == None:
+            self._root = node._right
+
+        node._parent = node._right
+        node._right = node._right._left
+        temp_node._left = node
+
+        # adjust the heights
+        node._rheight = node._parent._lheight
+        node._parent._lheight = max(node._rheight, node._lheight) + 1
+
     def _rebalance_tree(self, node: Node) -> None:
         if abs(node.get_bf()) < 2:
             return
@@ -29,27 +45,24 @@ class BST:
         if node.get_bf() > 0:
             if node._right.get_bf() >= 0:
                 # RR -> rotate left
-                temp_node = node._right
-
-                node._right._parent = node._parent
-
-                if node._right._parent == None:
-                    self._root = node._right
-
-                node._parent = node._right
-                node._right = node._right._left
-                temp_node._left = node
-
-                # adjust the heights
-                if node._right == None:
-                    node._rheight = 0
-                else:
-                    node._rheight = max(node._right._rheight, node._right._lheight)
-
-                node._parent._lheight = max(node._rheight, node._lheight)
+                self._rr_rotate_left(node)
             else:
                 # RL -> rotate right then left
-                pass
+
+                # perform rotate right
+                node._right._parent = node._right._left
+                node._right._left = node._right._parent._right
+                node._right._parent._parent = node
+                node._right._parent._right = node._right
+                node._right = node._right._parent
+                
+                # adjust the heights
+                node._right._right._lheight = node._right._rheight
+                node._right._rheight = max(node._right._right._lheight, node._right._right._rheight) + 1
+                node._rheight = max(node._right._lheight, node._right._rheight) + 1
+
+                # perform rotate left
+                self._rr_rotate_left(node)
 
         # left heavy
         if node.get_bf() < 0:

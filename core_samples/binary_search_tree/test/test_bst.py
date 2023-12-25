@@ -106,6 +106,40 @@ def test_add_node(get_array_list) -> None:
         elif file_name == 'arr_04.json':
             bstree = bst.BST(arr, True)
 
+            assert bstree._root._value == 6
+            assert bstree._root._lheight == 2
+            assert bstree._root._rheight == 1
+
+            assert bstree._root._left._value == 3
+            assert bstree._root._left._lheight == 0
+            assert bstree._root._left._rheight == 1
+
+            assert bstree._root._left._right._value == 5
+            assert bstree._root._left._right._lheight == 0
+            assert bstree._root._left._right._rheight == 0
+
+            assert bstree._root._right._value == 7
+            assert bstree._root._right._lheight == 0
+            assert bstree._root._right._rheight == 0
+
+        elif file_name == 'arr_05.json':
+            bstree = bst.BST(arr, True)
+
+            assert bstree._root._value == 5
+            assert bstree._root._lheight == 2
+            assert bstree._root._rheight == 1
+
+            assert bstree._root._left._value == 3
+            assert bstree._root._left._lheight == 0
+            assert bstree._root._left._rheight == 1
+
+            assert bstree._root._left._right._value == 4
+            assert bstree._root._left._right._lheight == 0
+            assert bstree._root._left._right._rheight == 0
+
+            assert bstree._root._right._value == 6
+            assert bstree._root._right._lheight == 0
+            assert bstree._root._right._rheight == 0
             
 
     print('test_add_node(): finished...')
